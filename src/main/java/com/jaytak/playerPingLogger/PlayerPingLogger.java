@@ -33,6 +33,8 @@ public final class PlayerPingLogger extends JavaPlugin implements Listener {
                 throw new RuntimeException(e);
             }
         }
+        int pluginId = 23544;
+        Metrics metrics = new Metrics(this, pluginId);
         getLogger().info("PlayerPingLogger is enabled");
         JTLogger("PlayerPingLogger is enabled");
     }

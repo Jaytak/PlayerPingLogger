@@ -1,4 +1,4 @@
 name: PlayerPingLogger
-version: '0.1.9-alpha-SNAPSHOT'
+version: '0.1.10'
 main: com.jaytak.playerPingLogger.PlayerPingLogger
 api-version: '1.21'
