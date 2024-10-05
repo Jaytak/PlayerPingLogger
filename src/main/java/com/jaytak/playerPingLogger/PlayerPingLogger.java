@@ -64,6 +64,7 @@ public final class PlayerPingLogger extends JavaPlugin implements Listener {
                     JTLogger("Player " + playerName + "'s ping: " + player.getPing() + "ms");
                 } else {
                     JTLogger("Player " + playerName + " disconnected before capturing further ping measurements.");
+                    players.remove(playerName);
                     Bukkit.getScheduler().cancelTasks(PlayerPingLogger.this);
                 }
             }
