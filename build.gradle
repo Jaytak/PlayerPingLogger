@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.jaytak'
-version = '0.1.10'
+version = '0.1.13'
 
 repositories {
     mavenCentral()

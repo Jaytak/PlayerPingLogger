@@ -13,11 +13,15 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class PlayerPingLogger extends JavaPlugin implements Listener {
     private File historyFile;
     private final List<String> players = new ArrayList<>();
+    private Map<String, Integer> playerTasks = new HashMap<>();
+
 
     @Override
     public void onEnable() {
@@ -50,16 +54,17 @@ public final class PlayerPingLogger extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String playerName = player.getName();
-        JTLogger("Player " + player.getName() + " joined.");
-        if (players.contains(playerName)){
+        JTLogger("Player " + playerName  + " joined.");
+
+        if (players.contains(playerName)) {
             JTLogger("Task already running for player " + playerName);
             return;
-        }
-        else{
+        } else {
             players.add(playerName);
             JTLogger("Creating new task for player " + playerName);
         }
-        Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
+
+        int taskId = Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
             @Override
             public void run() {
                 if (player.isOnline()) {
@@ -67,10 +72,13 @@ public final class PlayerPingLogger extends JavaPlugin implements Listener {
                 } else {
                     JTLogger("Player " + playerName + " disconnected before capturing further ping measurements.");
                     players.remove(playerName);
-                    Bukkit.getScheduler().cancelTasks(PlayerPingLogger.this);
+                    Bukkit.getScheduler().cancelTask(playerTasks.get(playerName));
+                    playerTasks.remove(playerName);
                 }
             }
-        }, 0, 20 * 60);
+        }, 0, 20 * 60).getTaskId();
+
+        playerTasks.put(playerName, taskId);
     }
 
 
